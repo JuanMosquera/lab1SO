@@ -177,7 +177,59 @@ float promedio_ingresos_por_edad_ciudad2(struct Nodo *lista,  int edad_min, int 
 }
 
 ////////////////////////////////////////////////////
+//punto 3
 
+
+float probabilidad_enfermedad(item_t *personas, int tam, int edad_limite) {
+    int contador_mayores = 0;
+    int contador_enfermos = 0;
+    const char* enfermedad = "Yes";
+
+    for (int i = 0; i < tam; i++) {
+        if (personas[i].age > edad_limite) {
+            contador_mayores++;
+            if (strcmp(illness_values[personas[i].illness], enfermedad) == 0) {
+                contador_enfermos++;
+            }
+        }
+    }
+
+    if (contador_mayores == 0) {
+        return 0.0;
+    }
+
+    return (float) contador_enfermos / contador_mayores;
+}
+
+
+float probabilidad_enfermedad2(struct Nodo *lista, int edad_limite) {
+    struct Nodo *nodoActual = lista;
+    int contador_mayores = 0;
+    int contador_enfermos = 0;
+    const char* enfermedad = "Yes";
+
+    while (nodoActual != NULL) {
+        if (nodoActual->item_n.age> edad_limite) {
+            contador_mayores++;
+            if (strcmp(illness_values[nodoActual->item_n.illness], enfermedad) == 0) {
+                contador_enfermos++;
+            }
+        }
+
+        nodoActual = nodoActual->siguiente;
+    } 
+
+    if (contador_mayores == 0) {
+        return 0.0;
+    }
+
+    return (float) contador_enfermos / contador_mayores;
+}
+
+
+////////////////////////////////////punto 3
+
+//////////////////////////MAIN//////////////////////
 int main(int argc, char *argv[]){
     FILE * fp;
     char * line = NULL;
@@ -270,6 +322,15 @@ int main(int argc, char *argv[]){
     printf("Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f\n", ciudad, edad_min, edad_max, promedio);
    ////////////////////////// pregunta 2
 
+   //////pregunta 3///////////////
+   
+    int edad_limite = 60;
+
+    //float prob = probabilidad_enfermedad(items, num_elementos, edad_limite);
+    //printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
+    float prob = probabilidad_enfermedad2(lista, edad_limite);
+    printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
+////////////////////////////////////////////
 
 
     fclose(fp);
