@@ -112,6 +112,72 @@ void personasPorCiudad2(item_t *nodos, int tam) {
 
 //////////////////////////////////////////////////////
 
+/*
+typedef struct {
+    char ciudad[20];
+    float ingresos;
+    int edad;
+} Persona;
+
+void promedioIngresos(Persona personas[], int tam, int edadMinima, int edadMaxima) {
+    float totalIngresos = 0.0;
+    int numPersonas = 0;
+    
+    for (int i = 0; i < tam; i++) {
+        if (personas[i].edad >= edadMinima && personas[i].edad <= edadMaxima) {
+            totalIngresos += personas[i].ingresos;
+            numPersonas++;
+        }
+    }
+
+    if (numPersonas > 0) {
+        float promedio = totalIngresos / numPersonas;
+        printf("El promedio de ingresos para personas entre %d y %d años es: %.2f\n", edadMinima, edadMaxima, promedio);
+    } else {
+        printf("No se encontraron personas en el rango de edad especificado\n");
+    }
+}
+*/
+// la funcion para el array
+float promedio_ingresos_por_edad_ciudad(item_t *personas, int n, int edad_min, int edad_max, const char* ciudad) {
+    float total_ingresos = 0.0;
+    int n_personas = 0;
+    for (int i = 0; i < n; i++) {
+        if (personas[i].age >= edad_min && personas[i].age <= edad_max && strcmp(city_names[personas[i].city], ciudad) == 0) {
+            total_ingresos += personas[i].income;
+            n_personas++;
+        }
+    }
+    if (n_personas > 0) {
+        return total_ingresos / n_personas;
+    } else {
+        return 0.0;
+    }
+}
+// la funcion para lista
+float promedio_ingresos_por_edad_ciudad2(struct Nodo *lista,  int edad_min, int edad_max, const char* ciudad) {
+    struct Nodo *nodoActual = lista;
+    float total_ingresos = 0.0;
+    int n_personas = 0;
+
+    while (nodoActual != NULL) {
+        if (nodoActual->item_n.age >= edad_min && nodoActual->item_n.age <= edad_max && strcmp(city_names[nodoActual->item_n.city], ciudad) == 0) {
+            total_ingresos += nodoActual->item_n.income;
+            n_personas++;
+        }
+
+        nodoActual = nodoActual->siguiente;
+    }   
+
+    if (n_personas > 0) {
+        return total_ingresos / n_personas;
+    } else {
+        return 0.0;
+    }
+}
+
+////////////////////////////////////////////////////
+
 int main(int argc, char *argv[]){
     FILE * fp;
     char * line = NULL;
@@ -177,6 +243,7 @@ int main(int argc, char *argv[]){
 	line_number++;
     }
 
+    ///////////////////////// numero 1
     printf("Persona %d: %d años \n", items[1].id, items[1].age);
     printf("ciudad %s\n",city_names[items[1].city] );
 
@@ -188,10 +255,20 @@ int main(int argc, char *argv[]){
     crearLista(items, num_elementos, &lista);
     //imprimirLista(lista);
     //personasPorCiudad(lista);
-    personasPorCiudad2(items,num_elementos);
-    
-    
+    //personasPorCiudad2(items,num_elementos);
+    ///////////////////////////////////////////////////////////////
 
+
+    ////////////////////////// pregunta 2
+    //int n_personas = sizeof(personas) / sizeof(struct Persona);
+    //num_elementos ya esta determinado en la linea 245
+    int edad_min = 25;
+    int edad_max = 40;
+    const char* ciudad = "Dallas";
+    //float promedio = promedio_ingresos_por_edad_ciudad(items, num_elementos, edad_min, edad_max, ciudad);
+    float promedio = promedio_ingresos_por_edad_ciudad2(lista,  edad_min, edad_max, ciudad);
+    printf("Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f\n", ciudad, edad_min, edad_max, promedio);
+   ////////////////////////// pregunta 2
 
 
 
