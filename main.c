@@ -227,7 +227,41 @@ float probabilidad_enfermedad2(struct Nodo *lista, int edad_limite) {
 }
 
 
-////////////////////////////////////punto 3
+////////////////////////////////////punto 4
+
+void buscar_persona_por_id(item_t *personas, int tam, int id_buscado) {
+    int i;
+    for (i = 0; i < tam; i++) {
+        if (personas[i].id == id_buscado-1) {
+            printf("Informacion de la persona con ID %d:\n", id_buscado);
+            printf("Ciudad: %s\n", city_names[personas[i].city]);
+            printf("Genero: %s\n", gender_names[personas[i].gender]);
+            printf("Edad: %d\n", personas[i].age);
+            printf("Ingresos: %.d\n", personas[i].income);
+            printf("Efermedad: %s\n", illness_values[personas[i].illness]);
+            return;
+        }
+    }
+    printf("No se encontro una persona con el ID %d\n", id_buscado);
+}
+
+void buscar_persona_por_id2( struct Nodo *lista , int id_buscado) {
+    struct Nodo *nodoActual = lista;
+
+    while (nodoActual != NULL) {
+        if (nodoActual->item_n.id == id_buscado-1) {
+            printf("Informacion de la persona con ID %d:\n", id_buscado);
+            printf("Ciudad: %s\n", city_names[nodoActual->item_n.city]);
+            printf("Genero: %s\n", gender_names[nodoActual->item_n.gender]);
+            printf("Edad: %d\n", nodoActual->item_n.age);
+            printf("Ingresos: %.d\n", nodoActual->item_n.income);
+            printf("Efermedad: %s\n", illness_values[nodoActual->item_n.illness]);
+            return;
+        }
+    nodoActual = nodoActual->siguiente;
+    } 
+    printf("No se encontro una persona con el ID %d\n", id_buscado);
+}
 
 //////////////////////////MAIN//////////////////////
 int main(int argc, char *argv[]){
@@ -331,6 +365,12 @@ int main(int argc, char *argv[]){
     float prob = probabilidad_enfermedad2(lista, edad_limite);
     printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
 ////////////////////////////////////////////
+
+//////////////punto 4 /////////////////////
+    int id_buscado = 2;
+    buscar_persona_por_id(items, num_elementos, id_buscado);
+    buscar_persona_por_id2(lista, id_buscado);
+//////////////punto 4 /////////////////////
 
 
     fclose(fp);
