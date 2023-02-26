@@ -45,16 +45,19 @@ void crearLista(item_t *nodos, int tam, struct Nodo **lista) {
 
 void imprimirLista(struct Nodo *lista) {
     struct Nodo *nodoActual = lista;
-    
+    int  cont=0;
+
     while (nodoActual != NULL) {
         //printf(get_city_t(nodoActual->item_n.city));
-        printf("ciudad %s\n",city_names[nodoActual->item_n.city] );
+        //printf("ciudad %s\n",city_names[nodoActual->item_n.city] );
         printf("Id: %d\n", nodoActual->id);
+        cont++;
         nodoActual = nodoActual->siguiente;
     }
+    printf("%d",cont);
 }
 
-
+////////////////////////////////////////////////////////////////// punto 1
 
 
 int numeroPersonas(struct Nodo* cabeza,char ciudad[] ) {
@@ -110,35 +113,8 @@ void personasPorCiudad2(item_t *nodos, int tam) {
     }   
 }
 
-//////////////////////////////////////////////////////
+////////////////////////////////////////////////////// punto 2
 
-/*
-typedef struct {
-    char ciudad[20];
-    float ingresos;
-    int edad;
-} Persona;
-
-void promedioIngresos(Persona personas[], int tam, int edadMinima, int edadMaxima) {
-    float totalIngresos = 0.0;
-    int numPersonas = 0;
-    
-    for (int i = 0; i < tam; i++) {
-        if (personas[i].edad >= edadMinima && personas[i].edad <= edadMaxima) {
-            totalIngresos += personas[i].ingresos;
-            numPersonas++;
-        }
-    }
-
-    if (numPersonas > 0) {
-        float promedio = totalIngresos / numPersonas;
-        printf("El promedio de ingresos para personas entre %d y %d años es: %.2f\n", edadMinima, edadMaxima, promedio);
-    } else {
-        printf("No se encontraron personas en el rango de edad especificado\n");
-    }
-}
-*/
-// la funcion para el array
 float promedio_ingresos_por_edad_ciudad(item_t *personas, int n, int edad_min, int edad_max, const char* ciudad) {
     float total_ingresos = 0.0;
     int n_personas = 0;
@@ -263,6 +239,102 @@ void buscar_persona_por_id2( struct Nodo *lista , int id_buscado) {
     printf("No se encontro una persona con el ID %d\n", id_buscado);
 }
 
+//////////////////////punto 5/////////
+
+void insertar_despues(struct Nodo *lista, int posicion, item_t nod) {
+    struct Nodo *nodoActual = lista;
+    struct Nodo *nuevo_nodo = crearNodo(posicion, nod);
+
+   // while (nodoActual->id < dir) {
+    for (int i = 2; i < posicion; i++) { 
+        nodoActual = nodoActual->siguiente;
+    }
+    
+    nuevo_nodo->siguiente = nodoActual->siguiente; // inserta el nuevo nodo
+    nodoActual->siguiente = nuevo_nodo;
+
+    while (nodoActual != NULL) {
+        //printf("%d ", actual->id);
+        nodoActual->id = nodoActual->id+1;
+        nodoActual = nodoActual->siguiente;
+    }
+
+}
+    
+    
+    /*// libera la memoria de la lista
+    Nodo* actual = cabeza;
+    while (actual != NULL) {
+        Nodo* temp = actual;
+        actual = actual->siguiente;
+        free(temp);
+    */
+    
+//////////////////////punto 5/////////
+
+//////////////////////punto 6/////////
+    
+int numeroPersonasedad3(struct Nodo* cabeza,char ciudad[],int edad1 ) {
+    int contador = 0;
+    while (cabeza != NULL) {
+        if ((strcmp(city_names[cabeza->item_n.city], ciudad) == 0) &&  cabeza->item_n.age==edad1){
+            contador++;
+        }
+        cabeza = cabeza->siguiente;
+    }
+    return contador;
+}
+
+void personasPorCiudadedad3(struct Nodo *lista, int edad) {
+    struct Nodo *nodoActual = lista;
+    const int tamano = sizeof(city_names) / sizeof(city_names[0]);
+    int habitantes=0;
+    char nCiudad[20];
+
+    for (int i = 0; i < tamano; i++) {
+        printf("%s ", city_names[i]);
+        strcpy(nCiudad,city_names[i]);
+        habitantes = numeroPersonasedad3(nodoActual,nCiudad, edad);
+        printf("habitantes   %d \n ", habitantes);
+    }   
+}
+
+/*cuenta el numero de personas en el array de element*/
+int numeroPersonasedad(item_t *nodos1,int tam1,char ciudad[],int edad1 ) {
+    int contador = 0;
+    
+    for (int i = 0; i < tam1; i++) {
+        
+        if ((strcmp(city_names[nodos1[i].city], ciudad) == 0)&& nodos1[i].age==edad1) {
+            contador++;
+        }
+        
+    }
+    return contador;
+}
+/*cuanta el numero de personar en una ciudad en el array de element*/
+void personasPorCiudadedad(item_t *nodos, int tam, int edad) {
+    
+    const int tamano = sizeof(city_names) / sizeof(city_names[0]);
+    int habitantes=0;
+    char nCiudad[20];
+
+    for (int i = 0; i < tamano; i++) {
+        printf("%s ", city_names[i]);
+        strcpy(nCiudad,city_names[i]);
+        habitantes = numeroPersonasedad(nodos,tam,nCiudad,edad);
+        printf("habitantes   %d \n ", habitantes);
+    }   
+}
+//////////////////////punto 6/////////
+
+//////////////////////punto 7/////////
+    
+//////////////////////punto 7/////////
+
+
+
+
 //////////////////////////MAIN//////////////////////
 int main(int argc, char *argv[]){
     FILE * fp;
@@ -329,50 +401,112 @@ int main(int argc, char *argv[]){
 	line_number++;
     }
 
-    ///////////////////////// numero 1
-    printf("Persona %d: %d años \n", items[1].id, items[1].age);
-    printf("ciudad %s\n",city_names[items[1].city] );
-
 	int num_elementos = sizeof(items) / sizeof(item_t);
-
-    //printf("El numero de elementos en el array de personas es: %d\n", num_elementos);
-
     struct Nodo *lista = NULL;
     crearLista(items, num_elementos, &lista);
-    //imprimirLista(lista);
-    //personasPorCiudad(lista);
-    //personasPorCiudad2(items,num_elementos);
-    ///////////////////////////////////////////////////////////////
+/*forma de ejecutar el codigo 
+se compila 
+        gcc -c main.c -o main.o
+        gcc -c base_struct.c -o base_struct.o
+        gcc base_struct.o main.o -o program
+        ./program toy_dataset.csv
+ */
+    char opcion[10];
+    
+    while (strcmp(opcion, "salir") != 0) {
+        printf("Seleccione una opcion:\n");
+        printf("Opcion 1 cantidad de personas por cada ciudad.\n");
+        printf("Opcion 2 el promedio de ingresos de las personas que viven en la misma ciudad.\n");
+        printf("Opcion 3 la probabilidad de estar enfermo a cierta edad\n");
+        printf("Opcion 4 recuperar un elemento a partir de su id \n");
+        printf("Opcion 5 insertar un nuevo elemento en la mitad de los datos, utilice el id\n");
+        printf("Opcion 6 cantidad de personas que viven en cada ciudad y que además tienen X años.\n");
+        printf("Opcion 7 archivo de salida con los resultados de la invocación de las funciones.\n");
+        printf(" Salir\n\n");
+        
+        printf("Opcion seleccionada: ");
+        scanf("%s", opcion);
+        
+        if (strcmp(opcion, "1") == 0) {
+            printf("\n");
+            printf("***ejecutado con la lista***\n");
+            personasPorCiudad(lista);
+            printf("\n");
+            printf("\n");
+            printf("***ejecutado con arreglo***\n");
+            personasPorCiudad2(items,num_elementos);
+            printf("\n");
 
+        } else if (strcmp(opcion, "2") == 0) {
+            printf("\n");
+            printf("Seleccionaste la opcion 2\n");
+            int edad_min = 25;
+            int edad_max = 40;
+            const char* ciudad = "Dallas";
+            //float promedio = promedio_ingresos_por_edad_ciudad(items, num_elementos, edad_min, edad_max, ciudad);
+            float promedio = promedio_ingresos_por_edad_ciudad2(lista,  edad_min, edad_max, ciudad);
+            printf("Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f\n", ciudad, edad_min, edad_max, promedio);
+            printf("\n");
+            printf("\n");
 
-    ////////////////////////// pregunta 2
-    //int n_personas = sizeof(personas) / sizeof(struct Persona);
-    //num_elementos ya esta determinado en la linea 245
-    int edad_min = 25;
-    int edad_max = 40;
-    const char* ciudad = "Dallas";
-    //float promedio = promedio_ingresos_por_edad_ciudad(items, num_elementos, edad_min, edad_max, ciudad);
-    float promedio = promedio_ingresos_por_edad_ciudad2(lista,  edad_min, edad_max, ciudad);
-    printf("Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f\n", ciudad, edad_min, edad_max, promedio);
-   ////////////////////////// pregunta 2
+        } else if (strcmp(opcion, "3") == 0) {
+            printf("\n");
+            printf("Seleccionaste la opcion 3\n");
+            int edad_limite = 60;
 
-   //////pregunta 3///////////////
-   
-    int edad_limite = 60;
-
-    //float prob = probabilidad_enfermedad(items, num_elementos, edad_limite);
-    //printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
-    float prob = probabilidad_enfermedad2(lista, edad_limite);
-    printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
-////////////////////////////////////////////
-
-//////////////punto 4 /////////////////////
-    int id_buscado = 2;
-    buscar_persona_por_id(items, num_elementos, id_buscado);
-    buscar_persona_por_id2(lista, id_buscado);
-//////////////punto 4 /////////////////////
-
-
+            //float prob = probabilidad_enfermedad(items, num_elementos, edad_limite);
+            //printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
+            float prob = probabilidad_enfermedad2(lista, edad_limite);
+            printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
+            printf("\n");
+            printf("\n");
+        } else if (strcmp(opcion, "4") == 0) {
+            printf("\n");
+            printf("Seleccionaste la opcion 4.\n");
+            int id_buscado = 2;
+            buscar_persona_por_id(items, num_elementos, id_buscado);
+            printf("\n");
+            buscar_persona_por_id2(lista, id_buscado);
+            printf("\n");   
+            printf("\n");
+        } else if (strcmp(opcion, "5") == 0) {
+            printf("\n");
+            printf("Seleccionaste la opcion 5.\n");
+            item_t nuevo_element;
+            nuevo_element.id=75000;
+            nuevo_element.city=items[100].city;
+            nuevo_element.age=items[1000].age;
+            nuevo_element.gender=items[20000].gender;
+            nuevo_element.income=items[40000].income;
+            nuevo_element.illness=items[60000].illness;
+    
+            insertar_despues(lista, 75000,nuevo_element);
+            //imprimirLista(lista);
+            printf("\n");
+        } else if (strcmp(opcion, "6") == 0) {
+            printf("\n");
+            printf("Seleccionaste la opcion 6.\n");
+            int an =40; 
+            printf("\n\nEjecucion con el arreglo\n");
+            personasPorCiudadedad3(lista, an);
+            printf("\n\nEjecucion con la lista\n");
+            personasPorCiudadedad(items,num_elementos, an);
+            printf("\n");
+            printf("\n");
+        } else if (strcmp(opcion, "7") == 0) {
+            printf("\n");
+            printf("Seleccionaste la opcion 7.\n");
+        //////////////////////punto 7/////////
+    
+        //////////////////////punto 7///////// 
+        
+        } else if (strcmp(opcion, "salir") == 0) {
+            printf("Saliendo del programa...\n");
+        } else {
+            printf("Opcion invalida. Intente de nuevo.\n");
+        }
+    }
+    
     fclose(fp);
     if (line)
         free(line);
