@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include "base_struct.h"
+#include <time.h>
 
 const int SIZE = 150000;
+FILE *archivo;// archivo
 
 //////////////////////////////////////////////////////
 /*define una structura tipo nodo */
@@ -19,7 +21,7 @@ struct Nodo* crearNodo(int id, item_t itemnodo) {
     struct Nodo *nuevoNodo = (struct Nodo*) malloc(sizeof(struct Nodo));
     
     nuevoNodo->id=id;
-    nuevoNodo->item_n=itemnodo;
+    nuevoNodo->item_n=itemnodo;  
     nuevoNodo->siguiente = NULL;
     return nuevoNodo;
 }
@@ -82,6 +84,11 @@ void personasPorCiudad(struct Nodo *lista) {
         strcpy(nCiudad,city_names[i]);
         habitantes = numeroPersonas(nodoActual,nCiudad);
         printf("habitantes   %d \n ", habitantes);
+        if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo,"%s ", city_names[i]);
+                    fprintf(archivo,"habitantes   %d \n ", habitantes);
+                    
+            }
     }   
 }
 
@@ -110,6 +117,11 @@ void personasPorCiudad2(item_t *nodos, int tam) {
         strcpy(nCiudad,city_names[i]);
         habitantes = numeroPersonas2(nodos,tam,nCiudad);
         printf("habitantes   %d \n ", habitantes);
+        if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo,"%s ", city_names[i]);
+                    fprintf(archivo,"habitantes   %d \n ", habitantes);
+                    
+            }
     }   
 }
 
@@ -209,12 +221,20 @@ void buscar_persona_por_id(item_t *personas, int tam, int id_buscado) {
     int i;
     for (i = 0; i < tam; i++) {
         if (personas[i].id == id_buscado-1) {
-            printf("Informacion de la persona con ID %d:\n", id_buscado);
+            printf("Informacion de la persona con ID %d:\n", personas[i].id);
             printf("Ciudad: %s\n", city_names[personas[i].city]);
             printf("Genero: %s\n", gender_names[personas[i].gender]);
             printf("Edad: %d\n", personas[i].age);
             printf("Ingresos: %.d\n", personas[i].income);
             printf("Efermedad: %s\n", illness_values[personas[i].illness]);
+            if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo,"Informacion de la persona con ID %d:\n", personas[i].id);
+                    fprintf(archivo,"Ciudad: %s\n", city_names[personas[i].city]);
+                    fprintf(archivo,"Genero: %s\n", gender_names[personas[i].gender]);
+                    fprintf(archivo,"Edad: %d\n", personas[i].age);
+                    fprintf(archivo,"Ingresos: %.d\n", personas[i].income);
+                    fprintf(archivo,"Efermedad: %s\n", illness_values[personas[i].illness]);
+            }
             return;
         }
     }
@@ -226,14 +246,23 @@ void buscar_persona_por_id2( struct Nodo *lista , int id_buscado) {
 
     while (nodoActual != NULL) {
         if (nodoActual->item_n.id == id_buscado-1) {
-            printf("Informacion de la persona con ID %d:\n", id_buscado);
+            printf("Informacion de la persona con ID %d:\n", nodoActual->item_n.id);
             printf("Ciudad: %s\n", city_names[nodoActual->item_n.city]);
             printf("Genero: %s\n", gender_names[nodoActual->item_n.gender]);
             printf("Edad: %d\n", nodoActual->item_n.age);
             printf("Ingresos: %.d\n", nodoActual->item_n.income);
             printf("Efermedad: %s\n", illness_values[nodoActual->item_n.illness]);
+            if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo,"Informacion de la persona con ID %d:\n", nodoActual->item_n.id);
+                    fprintf(archivo,"Ciudad: %s\n", city_names[nodoActual->item_n.city]);
+                    fprintf(archivo,"Genero: %s\n", gender_names[nodoActual->item_n.gender]);
+                    fprintf(archivo,"Edad: %d\n", nodoActual->item_n.age);
+                    fprintf(archivo,"Ingresos: %.d\n", nodoActual->item_n.income);
+                    fprintf(archivo,"Efermedad: %s\n", illness_values[nodoActual->item_n.illness]);
+            }
             return;
         }
+        
     nodoActual = nodoActual->siguiente;
     } 
     printf("No se encontro una persona con el ID %d\n", id_buscado);
@@ -246,7 +275,7 @@ void insertar_despues(struct Nodo *lista, int posicion, item_t nod) {
     struct Nodo *nuevo_nodo = crearNodo(posicion, nod);
 
    // while (nodoActual->id < dir) {
-    for (int i = 2; i < posicion; i++) { 
+    for (int i = 0; i < posicion; i++) { 
         nodoActual = nodoActual->siguiente;
     }
     
@@ -254,8 +283,8 @@ void insertar_despues(struct Nodo *lista, int posicion, item_t nod) {
     nodoActual->siguiente = nuevo_nodo;
 
     while (nodoActual != NULL) {
-        //printf("%d ", actual->id);
-        nodoActual->id = nodoActual->id+1;
+        
+        nodoActual->id = (nodoActual->id)+1;
         nodoActual = nodoActual->siguiente;
     }
 
@@ -270,9 +299,7 @@ void insertar_despues(struct Nodo *lista, int posicion, item_t nod) {
         free(temp);
     */
     
-//////////////////////punto 5/////////
 
-//////////////////////punto 6/////////
     
 int numeroPersonasedad3(struct Nodo* cabeza,char ciudad[],int edad1 ) {
     int contador = 0;
@@ -296,6 +323,10 @@ void personasPorCiudadedad3(struct Nodo *lista, int edad) {
         strcpy(nCiudad,city_names[i]);
         habitantes = numeroPersonasedad3(nodoActual,nCiudad, edad);
         printf("habitantes   %d \n ", habitantes);
+        if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo,"%s ", city_names[i]);
+                    fprintf(archivo, "habitantes   %d \n ", habitantes);
+        }
     }   
 }
 
@@ -324,15 +355,27 @@ void personasPorCiudadedad(item_t *nodos, int tam, int edad) {
         strcpy(nCiudad,city_names[i]);
         habitantes = numeroPersonasedad(nodos,tam,nCiudad,edad);
         printf("habitantes   %d \n ", habitantes);
+        if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo,"%s ", city_names[i]);
+                    fprintf(archivo, "habitantes   %d \n ", habitantes);
+        }
     }   
 }
-//////////////////////punto 6/////////
-
-//////////////////////punto 7/////////
-    
-//////////////////////punto 7/////////
-
-
+/*
+void guardar_resultados(float resultado1) {
+                FILE *archivo;// crear la variable por fuera 
+                archivo = fopen("resultados.txt", "w"); // Abrir archivo en modo escritura en f7
+                
+                if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo, "Resultado 1: %.2f\n", resultado1);
+                    
+                    fclose(archivo); // Cerrar archivo en el f 7
+                    printf("Los resultados se han guardado en el archivo 'resultados.txt'.\n");
+                } else {
+                    printf("No se pudo abrir el archivo 'resultados.txt'.\n");
+                }
+            }
+*/
 
 
 //////////////////////////MAIN//////////////////////
@@ -401,17 +444,32 @@ int main(int argc, char *argv[]){
 	line_number++;
     }
 
+    
+    
 	int num_elementos = sizeof(items) / sizeof(item_t);
-    struct Nodo *lista = NULL;
+    struct Nodo *lista = NULL;// creacion de lista vacia
     crearLista(items, num_elementos, &lista);
-/*forma de ejecutar el codigo 
-se compila 
+    /*forma de ejecutar el codigo 
+        se compila 
         gcc -c main.c -o main.o
         gcc -c base_struct.c -o base_struct.o
         gcc base_struct.o main.o -o program
         ./program toy_dataset.csv
  */
+
+    clock_t inicio, fin;
+    double tiempo_total;
     char opcion[10];
+    char opcion_int[10];
+    int numeroCiudad = 0;
+    char ciudad[10];// if si es null
+    int an =0;
+    int id_buscado =0;
+    float prob = 0;
+    int edad_limite = 0;
+    float promedio = 0;
+    int edad_max = 0;
+    int edad_min = 0;
     
     while (strcmp(opcion, "salir") != 0) {
         printf("Seleccione una opcion:\n");
@@ -427,51 +485,122 @@ se compila
         printf("Opcion seleccionada: ");
         scanf("%s", opcion);
         
-        if (strcmp(opcion, "1") == 0) {
-            printf("\n");
-            printf("***ejecutado con la lista***\n");
-            personasPorCiudad(lista);
-            printf("\n");
-            printf("\n");
-            printf("***ejecutado con arreglo***\n");
-            personasPorCiudad2(items,num_elementos);
+        if (strcmp(opcion, "1") == 0) {////////////////////////////
             printf("\n");
 
-        } else if (strcmp(opcion, "2") == 0) {
+
+            printf("***ejecutado con la lista***\n");
+            inicio = clock();
+            personasPorCiudad(lista);
+            fin = clock();
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n", tiempo_total);
+            printf("\n");
+            printf("\n");
+
+
+            printf("***ejecutado con arreglo***\n");
+            inicio = clock();
+            personasPorCiudad2(items,num_elementos);
+            fin = clock();
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n", tiempo_total);
+            printf("\n");
+
+        } else if (strcmp(opcion, "2") == 0) {////////////////////////////
             printf("\n");
             printf("Seleccionaste la opcion 2\n");
-            int edad_min = 25;
-            int edad_max = 40;
-            const char* ciudad = "Dallas";
-            //float promedio = promedio_ingresos_por_edad_ciudad(items, num_elementos, edad_min, edad_max, ciudad);
-            float promedio = promedio_ingresos_por_edad_ciudad2(lista,  edad_min, edad_max, ciudad);
-            printf("Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f\n", ciudad, edad_min, edad_max, promedio);
+            printf("ingresar la ciudad 1.Dallas, 2.New York City, 3.Los Angeles, 4.Mountain View, 5.Boston, 6.Washington D.C., 7.San Diego, 8.Austin : \n");
+            printf("\ningresar el numero de la ciudad: ");
+            scanf("%s", opcion_int);
+            numeroCiudad = atoi(opcion_int);
+            
+            strcpy(ciudad,city_names[numeroCiudad-1]);
+            printf("ingresar la edad minima: ");
+            scanf("%s", opcion_int);
+            edad_min = atoi(opcion_int);
+            
+            printf("ingresar la edad maxima: ");
+            scanf("%s", opcion_int);
+            edad_max = atoi(opcion_int);
+            printf("\n");
+            
+
+            inicio = clock();
+            promedio = promedio_ingresos_por_edad_ciudad(items, num_elementos, edad_min, edad_max, ciudad);
+            printf("Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f  array\n", ciudad, edad_min, edad_max, promedio);
+            fin = clock();
+            
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n\n", tiempo_total);
+            
+
+            inicio = clock();
+            promedio = promedio_ingresos_por_edad_ciudad2(lista,  edad_min, edad_max, ciudad);
+            printf("Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f lista\n", ciudad, edad_min, edad_max, promedio);
+            fin = clock();
+            
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n", tiempo_total);
             printf("\n");
             printf("\n");
 
-        } else if (strcmp(opcion, "3") == 0) {
+        } else if (strcmp(opcion, "3") == 0) {////////////////////////////
             printf("\n");
             printf("Seleccionaste la opcion 3\n");
-            int edad_limite = 60;
+            printf("ingresar la edad: ");
+            scanf("%s", opcion_int);
+            edad_limite = atoi(opcion_int);
+            
 
-            //float prob = probabilidad_enfermedad(items, num_elementos, edad_limite);
-            //printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
-            float prob = probabilidad_enfermedad2(lista, edad_limite);
-            printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n", edad_limite, prob);
+            inicio = clock();
+            prob = probabilidad_enfermedad(items, num_elementos, edad_limite);
+            printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f  array\n", edad_limite, prob);
+            fin = clock();
+            
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n", tiempo_total);
+            
+
+            inicio = clock();
+            prob = probabilidad_enfermedad2(lista, edad_limite);
+            printf("La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n  lista", edad_limite, prob);
+            fin = clock();
+            
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n", tiempo_total);
             printf("\n");
             printf("\n");
-        } else if (strcmp(opcion, "4") == 0) {
+
+        } else if (strcmp(opcion, "4") == 0) {////////////////////////////
             printf("\n");
             printf("Seleccionaste la opcion 4.\n");
-            int id_buscado = 2;
-            buscar_persona_por_id(items, num_elementos, id_buscado);
+            printf("ingrese el id a buscar: ");
+            scanf("%s", opcion_int);
+            id_buscado = atoi(opcion_int);
             printf("\n");
+
+            inicio = clock();
+            buscar_persona_por_id(items, num_elementos, id_buscado);
+            fin = clock();
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos. array \n ", tiempo_total);
+            printf("\n");
+
+            inicio = clock();
             buscar_persona_por_id2(lista, id_buscado);
+            fin = clock();
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos. lista\n  ", tiempo_total);
             printf("\n");   
             printf("\n");
-        } else if (strcmp(opcion, "5") == 0) {
+
+        } else if (strcmp(opcion, "5") == 0) {////////////////////////////
             printf("\n");
             printf("Seleccionaste la opcion 5.\n");
+            
+
+            inicio = clock();
             item_t nuevo_element;
             nuevo_element.id=75000;
             nuevo_element.city=items[100].city;
@@ -481,26 +610,83 @@ se compila
             nuevo_element.illness=items[60000].illness;
     
             insertar_despues(lista, 75000,nuevo_element);
+            fin = clock();
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n", tiempo_total);
+            
             //imprimirLista(lista);
             printf("\n");
-        } else if (strcmp(opcion, "6") == 0) {
+
+        } else if (strcmp(opcion, "6") == 0) {////////////////////////////
             printf("\n");
             printf("Seleccionaste la opcion 6.\n");
-            int an =40; 
+            printf("ingresar la edad: ");
+            scanf("%s", opcion_int);
+            an = atoi(opcion_int);
+
+            inicio = clock();
             printf("\n\nEjecucion con el arreglo\n");
             personasPorCiudadedad3(lista, an);
+            fin = clock();
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n", tiempo_total);
+            
+            inicio = clock();
             printf("\n\nEjecucion con la lista\n");
             personasPorCiudadedad(items,num_elementos, an);
+            fin = clock();
+            tiempo_total = ((double) (fin - inicio)) / CLOCKS_PER_SEC;
+            printf("El tiempo de ejecución fue de %.4f segundos.\n", tiempo_total);
             printf("\n");
             printf("\n");
-        } else if (strcmp(opcion, "7") == 0) {
+
+        } else if (strcmp(opcion, "7") == 0) {////////////////////////////
+            printf("\n");
             printf("\n");
             printf("Seleccionaste la opcion 7.\n");
-        //////////////////////punto 7/////////
-    
-        //////////////////////punto 7///////// 
+
+
+            archivo = fopen("resultados.txt", "w"); // Abrir archivo en modo escritura en f7
+
+            personasPorCiudad(lista);
+            personasPorCiudad2(items,num_elementos);
+
+            if(ciudad!= NULL){
+                promedio = promedio_ingresos_por_edad_ciudad(items, num_elementos, edad_min, edad_max, ciudad);
+                if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo,"Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f \n", ciudad, edad_min, edad_max, promedio);
+                    
+            }
+                promedio = promedio_ingresos_por_edad_ciudad2(lista,  edad_min, edad_max, ciudad);
+                if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo,"Promedio de ingresos en la ciudad %s para personas entre %d y %d años: %.2f \n", ciudad, edad_min, edad_max, promedio);
+                    
+            }
+            }
+           
+            prob = probabilidad_enfermedad(items, num_elementos, edad_limite);
+            if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo, "La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n ", edad_limite, prob);
+                    
+            }
+            prob = probabilidad_enfermedad2(lista, edad_limite);
+            if (archivo != NULL) { // Verificar si se abrió el archivo correctamente
+                    fprintf(archivo, "La probabilidad de estar enfermo si se es mayor de %d años es: %.7f\n ", edad_limite, prob);
+                    
+            }
+
+            buscar_persona_por_id(items, num_elementos, id_buscado);
+            buscar_persona_por_id2(lista, id_buscado);
+
+            personasPorCiudadedad3(lista, an);
+            personasPorCiudadedad(items,num_elementos, an);
+            
+
+            fclose(archivo); // Cerrar archivo en el f 7
+            printf("Los resultados se han guardado en el archivo 'resultados.txt'.\n");
+
         
-        } else if (strcmp(opcion, "salir") == 0) {
+        } else if (strcmp(opcion, "salir") == 0) {////////////////////////////
             printf("Saliendo del programa...\n");
         } else {
             printf("Opcion invalida. Intente de nuevo.\n");
